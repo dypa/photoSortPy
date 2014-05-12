@@ -27,7 +27,6 @@ class PhotoSorter:
     def __init__(self, args):
         self.fs = FileSystem()
         get_logger('app', 'logs/app.log', level=logging.DEBUG)
-        logging.getLogger('app').debug('App started')
 
         get_logger('images', 'logs/images.log')
         get_logger('videos', 'logs/videos.log')
@@ -35,6 +34,9 @@ class PhotoSorter:
 
         self.scan_dir = args.scan_option
         self.storage_dir = args.storage_option
+
+        logging.getLogger('app').debug('App started')
+
         self.fs.apply_callback_to_file_iterator(self.scan_dir, self.sorter)
 
         logging.getLogger('app').debug('App stoped normaly')

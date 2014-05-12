@@ -37,6 +37,9 @@ class Args:
         if not os.path.isdir(storage_dir):
             raise ArgumentException("--storage= is not folder")
 
+        if not os.access(scan_dir, os.W_OK):
+            raise ArgumentException("--scan= is not writeable folder")
+
         return os.path.abspath(storage_dir)
 
     @property

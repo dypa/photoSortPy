@@ -1,9 +1,9 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from args import *
-from photoSorter import *
-from photoIndexer import *
+from args import Args
+from photoSorter import PhotoSorter
+from photoIndexer import PhotoIndexer
 
 
 class Command:

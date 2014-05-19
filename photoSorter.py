@@ -1,9 +1,10 @@
 import re
 import imghdr
+import logging
 from datetime import datetime
 
-from logger import *
-from fileSystem import *
+from logger import get_logger
+from fileSystem import FileSystem
 
 
 class PhotoSorterException(Exception):
@@ -50,9 +51,8 @@ class PhotoSorter:
             raise PhotoSorterException('Unknown image type')
         return date_time
 
-    @staticmethod
-    def read_file_date(filename):
-        return datetime.fromtimestamp(os.path.getmtime(filename))
+    def read_file_date(self, filename):
+        return datetime.fromtimestamp(self.fs.get_mktime(filename))
 
     def read_exif_date(self, filename):
         file = open(filename, 'rb')
@@ -70,7 +70,7 @@ class PhotoSorter:
         md5 = self.fs.md5_file(filename)
         newfilename = dirname + '/' + date_time.strftime(self.FILE_FORMAT) + '.' + md5 + '.' + (
             'jpg' if image_type == 'jpeg' else image_type).upper()
-        if not os.path.isfile(newfilename):
+        if not self.fs.isfile(newfilename):
             self.fs.copy(filename, newfilename)
             logging.getLogger('images').info(md5 + ' ' + filename + ' => ' + newfilename)
         else:
@@ -81,7 +81,7 @@ class PhotoSorter:
         image_type = imghdr.what(filename)
         if image_type:
             self.progress_image(filename, self.read_image_date(image_type, filename), image_type)
-        elif os.path.splitext(filename)[-1].lower() in self.VIDEO_EXTENSIONS:
+        elif self.fs.splitext(filename)[-1].lower() in self.VIDEO_EXTENSIONS:
             logging.getLogger('videos').info(self.read_file_date(filename).strftime(self.FILE_FORMAT) + ' ' + filename)
         else:
             logging.getLogger('other').info(filename)

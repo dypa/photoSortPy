@@ -1,5 +1,7 @@
-from logger import *
-from fileSystem import *
+import logging
+
+from logger import get_logger
+from fileSystem import FileSystem
 
 
 class PhotoIndexer:

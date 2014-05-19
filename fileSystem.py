@@ -48,3 +48,15 @@ class FileSystem:
                 logging.getLogger('app').critical('Wrong md5 for file: ' + filename)
         else:
             logging.getLogger('app').debug('No md5 for filename: ' + filename)
+
+    @staticmethod
+    def get_mktime(filename):
+        return os.path.getmtime(filename)
+
+    @staticmethod
+    def isfile(filename):
+        return os.path.isfile(filename)
+
+    @staticmethod
+    def splitext(filename):
+        return os.path.splitext(filename)
